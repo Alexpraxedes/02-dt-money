@@ -6,10 +6,11 @@ export const Container = styled.header`
 
 export const Content = styled.div`
     max-width: 1200px;
+    width: 100%;
     margin: 0 auto;
-    padding: 1rem 1rem 10rem;
-    align-items: center;
+    padding: 1rem 1rem 7rem;
     display: flex;
+    align-items: center;
     justify-content: space-between;
 
     button {
