@@ -3,7 +3,7 @@ import { Dashboard } from './components/Dashboard';
 import { GlobalStyle } from './styles/global';
 import { ModalNewTransaction } from './components/NewTransactionModal';
 import { useState } from 'react';
-import { TransactionsProvider } from './TransactionsContext';
+import { TransactionsProvider } from './hooks/useTransactions';
 
 export function App(): JSX.Element {
   const [ isNewTransactionModalOpen, setIsNewTransactionModalOpen ] = useState(false);
