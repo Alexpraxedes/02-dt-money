@@ -1,6 +1,6 @@
 import Modal from 'react-modal';
-import { useState, FormEvent } from 'react';
-import { api } from '../../services/api';
+import { useState, FormEvent, useContext } from 'react';
+import { TransactionsContext } from '../../TransactionsContext';
 import entradaImg from '../../assets/entradas.svg';
 import saidaImg from '../../assets/saidas.svg';
 import fecharImg from '../../assets/fechar.svg';
@@ -14,16 +14,28 @@ interface ModalNewTransactionProps {
 Modal.setAppElement('#root');
 
 export function ModalNewTransaction( {onIsNewTransactionModalOpen, onCloseNewTransactionModal}: ModalNewTransactionProps ){
+    const { createTransaction } = useContext( TransactionsContext );
+
     const [ title, setTitle ] = useState( '' );
-    const [ value, setValue ] = useState( 0 );
+    const [ amount, setAmount ] = useState( 0 );
     const [ category, setCategory ] = useState( '' );
     const [ type, setType ] = useState('deposit');
     
-    function handleCreateNewTrabsaction(event: FormEvent) {
+    async function handleCreateNewTrabsaction(event: FormEvent) {
         event.preventDefault();
 
-        const data = { title, value, category, type }
-        api.post('/transactions', data );
+        await createTransaction({
+            title,
+            amount,
+            category,
+            type,
+        })
+
+        setTitle( '' );
+        setAmount( 0 );
+        setCategory( '' );
+        setType('deposit');
+        onCloseNewTransactionModal();
     }
 
     return(
@@ -51,8 +63,8 @@ export function ModalNewTransaction( {onIsNewTransactionModalOpen, onCloseNewTra
                 <input 
                     type="number"
                     placeholder='Valor'
-                    value={value}
-                    onChange={ event => setValue( Number(event.target.value)) }
+                    value={amount}
+                    onChange={ event => setAmount( Number(event.target.value)) }
                 />
                 <TransactionTypeConatiner>
                     <RadioBox
